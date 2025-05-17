@@ -6,3 +6,4 @@ uvicorn
 email-validator
 psycopg2-binary # For PostgreSQL
 requests # Para hacer peticiones HTTP al ESP32
+pydantic_settings
