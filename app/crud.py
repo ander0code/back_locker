@@ -101,31 +101,26 @@ def get_locker_alerts(db: Session, locker_id: int, skip: int = 0, limit: int = 1
     ).offset(skip).limit(limit).all()
 
 def release_locker(db: Session, locker_id: int):
-    """Libera un locker, lo marca como disponible y lo desasocia del usuario"""
-    # Obtener el locker
     db_locker = db.query(models.Locker).filter(models.Locker.id == locker_id).first()
     if not db_locker:
         return None
-    
-    # Si hay un usuario asignado, desasociarlo
+
+    # Limpiar el PIN del usuario asignado (si existe)
     if db_locker.assigned_user_id:
-        # Buscar el usuario asignado
         db_user = db.query(models.LockerUser).filter(models.LockerUser.id == db_locker.assigned_user_id).first()
         if db_user:
-            # Limpiar el PIN 
             db_user.pin = None
             db_user.pin_created_at = None
-            db.commit()
-    
+
     # Actualizar el locker
     db_locker.status = "disponible"
     db_locker.assigned_user_id = None
     db_locker.updated_at = datetime.utcnow()
-    
-    # Guardar cambios
+
+    # Hacer un solo commit para aplicar todos los cambios
     db.commit()
     db.refresh(db_locker)
-    
+
     return db_locker
 
 def is_pin_valid(db: Session, pin: str) -> bool:

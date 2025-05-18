@@ -10,9 +10,8 @@ class Settings(BaseSettings):
       # Email
     EMAIL_HOST_USER: str = "ttitokevin5@gmail.com"
     EMAIL_HOST_PASSWORD: str = "jkpy sfmr qupo uuer"
-    
-    # ESP32
-    ESP32_IP: str = "192.168.100.47"
+      # ESP32
+    ESP32_IP: str = "192.168.100.6"
     
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")
 

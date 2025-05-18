@@ -1,0 +1,36 @@
+# Configuración para el ESP32
+
+## Conexión Wi-Fi ##
+WIFI_SSID = "FAM TITO"
+WIFI_PASSWORD = "Max17Conny10"
+
+## Configuración del Backend ##
+BACKEND_IP = "192.168.100.6"
+BACKEND_PORT = 8000
+WS_PREFIX = "/ws/locker/"
+LOCKER_ID = 1
+
+## WebSocket completo ##
+# ws://192.168.100.6:8000/ws/locker/1
+
+## Pines para el ESP32 ##
+PIN_TRIG = 5    # Trigger del HC-SR04
+PIN_ECHO = 18   # Echo del HC-SR04
+PIN_SERVO = 13  # Control del servo
+
+## Notas Importantes ##
+# 1. El endpoint WebSocket está definido en routes.py con prefix="",
+#    lo que significa que la ruta es /ws/locker/{locker_id} y no /api/ws/locker/{locker_id}
+# 2. El WebSocket es ahora la única forma de comunicación con el backend,
+#    las llamadas HTTP han sido eliminadas
+# 3. Los comandos son enviados como JSON a través de WebSocket
+#    Ejemplo: {"cmd": "actuate", "open": true, "mode": "store"}
+# 4. El ESP32 debe reportar eventos como:
+#    - {"event": "distance", "value": 15.7}
+#    - {"event": "closing_timer", "value": 3}
+#    - {"event": "closed"}
+
+## Timeout & Delays ##
+STORE_TIMEOUT = 5000    # Tiempo en ms para colocar objeto (5 segundos)
+CLOSE_DELAY = 3000      # Tiempo en ms para cerrar después (3 segundos)
+DEBOUNCE_PERIOD = 100   # Tiempo en ms para debounce del sensor (100ms)
