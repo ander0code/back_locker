@@ -94,7 +94,8 @@ async def use_locker(locker_use: schemas.LockerUse, db: Session = Depends(get_db
         ws_command = {
             "cmd": "actuate",
             "open": True,
-            "mode": "store"
+            "mode": "store",
+             "tipo": "use"
         }
         await manager.broadcast(locker.id, json.dumps(ws_command))
         print(f"Comando enviado al locker {locker.id} por WebSocket: {ws_command}")
@@ -151,7 +152,8 @@ async def unlock_locker(pin_verification: schemas.PinVerification, db: Session =
         ws_command = {
             "cmd": "actuate",
             "open": True,
-            "mode": "retrieve"
+            "mode": "retrieve",
+            "tipo": "unlock"
         }
         await manager.broadcast(locker.id, json.dumps(ws_command))
         crud.create_locker_history(db, locker.id, "comando_websocket_enviado")
